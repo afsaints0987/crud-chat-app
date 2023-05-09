@@ -1,0 +1,17 @@
+.no-gutters {
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.chat-body {
+    height: 450px;
+}
+
+#contacts-container {
+    vertical-align: middle !important;
+
+    .btn {
+        width: 20px !important;
+        padding: 0;
+    }
+}
