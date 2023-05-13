@@ -9,6 +9,7 @@ const getAllusers = async (req, res) => {
         res.status(200).json(users)
     } catch {
         res.status(500).json({message: error.message})
+        return
     }
 }
 

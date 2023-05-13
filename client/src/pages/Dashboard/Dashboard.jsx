@@ -9,47 +9,54 @@ import Col from 'react-bootstrap/Col'
 import Container from 'react-bootstrap/Container'
 import './dashboard.scss'
 import { useEffect, useState } from "react"
-
-const sampleFriends = [
-  {
-    id: 1,
-    username: "joe123",
-  },
-  {
-    id: 2,
-    username: "kitty541",
-  },
-  {
-    id: 3,
-    username: "jondoe365",
-  },
-];
+import {http} from '../../config/axios'
 
 
 const Dashboard = () => {
   const [loginUser, setLoginUser] = useState(null)
+  const [users, setUsers] = useState([])
+  const [user, setUser] = useState([])
 
+  const handleUser = async (id) => {
+    try {
+      const data = await http.get(`user/${id}`)
+      setUser(data.data)
+    } catch(err){
+      console.log(err)
+    }
+  }
+
+  
   useEffect(() => {
-    const user = localStorage.getItem("userData")
-    setLoginUser(JSON.parse(user))
+    const user = localStorage.getItem("userData");
+    setLoginUser(JSON.parse(user));
   },[])
 
-  if(!loginUser){
-    return
+  useEffect(() => {
+    const getUsers = async () => {
+      const contacts = await http.get("/users");
+      setUsers(contacts.data);
+    };
+    getUsers();
+
+  }, []);
+
+  if(!loginUser || !users){
+    return null
   }
 
   return (
     <Container fluid className="no-gutters">
       <Navigation logo="Chat App" username={loginUser.userName} />
       <Row className="no-gutters">
-        <Col className="no-gutters">
+        <Col lg={2} className="no-gutters">
           <Sidebar />
         </Col>
-        <Col className="no-gutters">
-          <Contacts contactUser={sampleFriends}/>
+        <Col lg={3} className="no-gutters">
+          <Contacts contactUser={users} loggedInUser={loginUser} handleUser={handleUser}/>
         </Col>
-        <Col xs={8} className="no-gutters">
-          <Chatbox username="gigi543" socket={socket} />
+        <Col lg={7} className="no-gutters">
+          <Chatbox username={user.userName} socket={socket} />
         </Col>
       </Row>
       <Footer />

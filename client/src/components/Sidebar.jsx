@@ -36,7 +36,7 @@ const Sidebar = () => {
   const [modalShow, setModalShow] = useState(false)
   const [room, setRoom] = useState("");
   return (
-    <div className="container">
+    <div>
       <ul className="list-group list-group-flush">
         <li className="list-group-item">
           <button className="btn btn-transparent p-0 m-0" onClick={() => setModalShow(true)}>Join Room</button>

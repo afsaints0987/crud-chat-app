@@ -23,10 +23,16 @@ const Navigation = ({logo, username}) => {
               {logo} <IconName.GiChatBubble />
             </h5>
           </div>
-          <div className="inline">
-            <p>Welcome {username}</p>
-            <FaIcons.FaUserAlt />
-            <button onClick={handleLogout} className="btn btn-transparent text-light">
+          <div className="d-flex flex-row align-items-center">
+            <p className="m-0">
+              <FaIcons.FaUserAlt />
+              &nbsp; Welcome {username}
+            </p>
+
+            <button
+              onClick={handleLogout}
+              className="btn btn-transparent text-light"
+            >
               Sign out
             </button>
           </div>

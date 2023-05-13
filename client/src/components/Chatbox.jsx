@@ -20,19 +20,25 @@ const Chatbox = ({ username, socket }) => {
                 new Date(Date.now()).getMinutes().toString().padStart(2, "0")
             };
             await socket.emit("send_message", messageData)
+            // setMessageSend((prev) => [...prev, messageData])
             setCurrentMessage("")
         }
     }
 
     useEffect(() => {
       socket.on("receive_message", (data) => {
-        setMessageReceive((message) => [...message, data]);
+        setMessageReceive((prevMessage) => [...prevMessage, data]);
       });
       // cleanup function
       return () => {
         socket.off("receive_message");
       };
     },[socket])
+
+      const sortedMessages = [...messageReceive].sort(
+        (a, b) => new Date(a.time) - new Date(b.time)
+      );
+
 
   return (
     <div>
@@ -44,7 +50,7 @@ const Chatbox = ({ username, socket }) => {
         </div>
         <div className="chat-body">
           <div className="chat-body-text">
-            {messageReceive.map((list, index) => (
+            {sortedMessages.map((list, index) => (
               <div key={index} className="chat-message p-2 w-50">
                 <div>
                   <p className="m-0">{list.author}</p>
@@ -55,6 +61,7 @@ const Chatbox = ({ username, socket }) => {
                 </h6>
               </div>
             ))}
+
           </div>
         </div>
         <div className="chat-footer">
